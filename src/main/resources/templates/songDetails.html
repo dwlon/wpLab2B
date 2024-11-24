@@ -1,0 +1,21 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Song Details</title>
+
+</head>
+<body>
+<header>
+   <h1 th:text="${song.getTitle()}"></h1>
+</header>
+<section>
+    <h2 th:text="${song.getGenre()}"></h2>
+    <h2 th:text="${song.getReleaseYear()}"></h2>
+    <h2>Performers:</h2>
+    <ul th:each="artist : ${song.getPerformers()}">
+        <li th:text="${artist.getFirstName()} + ' ' + ${artist.getLastName()}"></li>
+    </ul>
+</section>
+
+</body>
+</html>

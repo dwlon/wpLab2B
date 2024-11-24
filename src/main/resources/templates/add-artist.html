@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Artist</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h2>Add Artist to a Song</h2>
+  <form th:action="@{/add-artist/add}" method="POST">
+    <!-- Song Selection Dropdown -->
+    <div class="form-group">
+      <label for="songId">Song</label>
+      <select id="songId" name="songId" class="form-control" required>
+        <option value="" disabled selected>Select a Song</option>
+        <option th:each="song : ${songs}" th:value="${song.id}" th:text="${song.title}"></option>
+      </select>
+    </div>
+
+    <!-- Artist First Name -->
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" name="firstName" class="form-control" required placeholder="Enter First Name">
+    </div>
+
+    <!-- Artist Last Name -->
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input type="text" id="lastName" name="lastName" class="form-control" required placeholder="Enter Last Name">
+    </div>
+
+    <!-- Artist Bio -->
+    <div class="form-group">
+      <label for="bio">Bio</label>
+      <textarea id="bio" name="bio" class="form-control" required placeholder="Enter Artist Bio"></textarea>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary">Add Artist to Song</button>
+  </form>
+
+  <!-- Back Button -->
+  <a href="/songs" class="btn btn-secondary mt-3">Back to Songs</a>
+</div>
+
+<!-- Optional: Add Bootstrap JS for better UI interactivity (e.g., tooltips, modals) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
