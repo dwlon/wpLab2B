@@ -14,7 +14,6 @@ public class Artist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
     String firstName;
     String lastName;
     String bio;

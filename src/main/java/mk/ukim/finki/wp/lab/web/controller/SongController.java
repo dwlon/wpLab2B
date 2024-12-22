@@ -6,6 +6,7 @@ import mk.ukim.finki.wp.lab.model.Song;
 import mk.ukim.finki.wp.lab.repository.AlbumRepository;
 import mk.ukim.finki.wp.lab.service.ArtistService;
 import mk.ukim.finki.wp.lab.service.SongService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +33,23 @@ public class SongController {
             model.addAttribute("error", error);
         }
 
+        List<Album> albums = this.albumRepository.findAll();
+        model.addAttribute("albums", albums);
+
         List<Song> songs = this.songService.listSongs();
         model.addAttribute("songs", songs);
         return "songs";
     }
 
+    @GetMapping("/access_denied")
+    public String getAccessDeniedPage(Model model) {
+        model.addAttribute("bodyContent", "access-denied");
+        return "master-template";
+    }
+
+
     @GetMapping("/edit-form/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String editSongPage(@PathVariable Long id, Model model) {
         Song song = this.songService.findById(id);
         if (song != null) {
@@ -53,6 +65,7 @@ public class SongController {
     }
 
     @GetMapping("/add-form")
+    @PreAuthorize("hasRole('ADMIN')")
     public String addSongPage(Model model) {
         List<Album> albums = this.albumRepository.findAll();
         List<Artist> artists = this.artistService.listArtists();
@@ -64,6 +77,7 @@ public class SongController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
     public String saveSong(@RequestParam(required = false) Long id,
                            @RequestParam String trackId,
                            @RequestParam String title,
@@ -82,9 +96,22 @@ public class SongController {
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteSong(@PathVariable Long id) {
         this.songService.deleteById(id);
         return "redirect:/songs";
+    }
+
+    @GetMapping("/filter")
+    public String filterSongsByAlbum(@RequestParam Long albumId, @RequestParam Integer year, Model model) {
+        List<Song> filtered = this.songService.findAllByAlbum_Id(albumId, year);
+        List<Album> albums = this.albumRepository.findAll();
+
+        model.addAttribute("songs", filtered);
+        model.addAttribute("albums", albums);
+        model.addAttribute("year", year);
+
+        return "songs";
     }
 
 }

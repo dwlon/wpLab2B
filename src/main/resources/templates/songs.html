@@ -17,15 +17,77 @@
     <script src="https://kit.fontawesome.com/e59232f0a1.js" crossorigin="anonymous"></script>
 
 </head>
-<body>
+<body  xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/"> Songs </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
+                <ul class="navbar-nav m-auto">
+                    <li class="nav-item m-auto">
+                        <a class="nav-link active" href="/songs"> Songs </a>
+                    </li>
+                    <li class="nav-item m-auto">
+                        <a class="nav-link active" href="/songs/add-form" sec:authorize="hasRole('ROLE_ADMIN')"> Add Song </a>
+                    </li>
+                    <li class="nav-item m-auto">
+                        <a class="nav-link active" href="/add-artist/add-form" sec:authorize="hasRole('ROLE_ADMIN')"> Add Arist </a>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="btn btn-light btn-sm ml-3" href="/logout">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
+                    </li>
+
+                    <li class="nav-item" sec:authorize="isAnonymous()">
+                        <a class="btn btn-light btn-sm ml-3" href="/login">
+                            <i class="fa-solid fa-right-to-bracket"></i> Login
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+
+<div class="container">
+    <form th:action="@{/songs/filter}" method="get">
+        <div class="form-group">
+            <label for="albumSelect">Filter by Album:</label>
+            <select name="albumId" id="albumSelect" class="form-control">
+                <option th:each="album : ${albums}"
+                        th:value="${album.id}"
+                        th:text="${album.name}">
+                </option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Filter Songs</button>
+
+        <div class="col-md-4">
+            <label for="year">Album Release Year</label>
+            <input type="number" id="year" name="year" class="form-control" th:value="${year}">
+        </div>
+    </form>
+
     <ul th:each="song : ${songs}">
         <li th:text="|${song.album.name} - ${song.title}|">
-                <ul>
-                    <li th:each="artist : ${song.getPerformers()}" th:text="|${artist.firstName} ${artist.lastName}|"></li>
-                </ul>
+            <ul>
+                <li th:each="artist : ${song.getPerformers()}" th:text="|${artist.firstName} ${artist.lastName}|"></li>
+            </ul>
         </li>
 
-        <th:block>
+        <th:block sec:authorize="hasRole('ROLE_ADMIN')">
             <form th:action="@{'/songs/delete/{id}' (id=${song.getId()})}"
                   th:method="DELETE">
                 <button type="submit"
@@ -35,11 +97,12 @@
             </form>
         </th:block>
 
-        <th:block>
+        <th:block sec:authorize="hasRole('ROLE_ADMIN')">
             <a th:href="@{'/songs/edit-form/{id}' (id=${song.getId()})}" class="btn btn-sm btn-info">
-                <i class="fa fa-trash"> Edit </i>
+                <i class="fa fa-edit"> Edit </i>
             </a>
         </th:block>
     </ul>
+</div>
 </body>
 </html>

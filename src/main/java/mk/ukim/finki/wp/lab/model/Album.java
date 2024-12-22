@@ -16,7 +16,7 @@ public class Album {
     private Long id;
     private String name;
     private String genre;
-    private String releaseYear;
+    private int releaseYear;
 
     @OneToMany(mappedBy = "album")
     private List<Song> songs = new ArrayList<>();
@@ -30,7 +30,7 @@ public class Album {
         songs.remove(song);
         song.setAlbum(null);
     }
-    public Album(String name, String genre, String releaseYear) {
+    public Album(String name, String genre, int releaseYear) {
         this.name = name;
         this.genre = genre;
         this.releaseYear = releaseYear;

@@ -16,5 +16,7 @@ public interface SongService {
     public Song update(Long id, String trackId, String title, String genre, int releaseYear, Long albumId, List<Long> artistIds);
     public void deleteById(Long id);
 
-    List<Song> findAllByAlbum_Id(Long albumId);
+    List<Song> findAllByAlbum_Id(Long albumId, int releaseYear);
+
+    List<Song> findAll();
 }

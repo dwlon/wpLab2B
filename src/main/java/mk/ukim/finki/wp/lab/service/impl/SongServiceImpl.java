@@ -5,7 +5,11 @@ import mk.ukim.finki.wp.lab.repository.AlbumRepository;
 import mk.ukim.finki.wp.lab.repository.ArtistRepository;
 import mk.ukim.finki.wp.lab.repository.SongRepository;
 import mk.ukim.finki.wp.lab.service.SongService;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import static mk.ukim.finki.wp.lab.service.specifications.SongSpecification.filterAlbum;
+import static mk.ukim.finki.wp.lab.service.specifications.SongSpecification.filterDate;
 
 import java.util.List;
 
@@ -70,7 +74,15 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public List<Song> findAllByAlbum_Id(Long albumId) {
-        return songRepository.findAllByAlbum_Id(albumId);
+    public List<Song> findAllByAlbum_Id(Long albumId, int releaseYear) {
+        Specification<Song> specification = Specification
+                .where(filterAlbum(Song.class, "album.id", albumId))
+                .and(filterDate(Song.class, "album.releaseYear", releaseYear));
+
+        return this.songRepository.findAll(specification);
+    }
+
+    public List<Song> findAll() {
+        return this.songRepository.findAll();
     }
 }

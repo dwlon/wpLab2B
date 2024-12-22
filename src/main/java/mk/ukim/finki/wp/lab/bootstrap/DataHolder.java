@@ -17,9 +17,7 @@ public class DataHolder {
     public static List<Artist> artists = new ArrayList<>();
 
     public static List<Song> songs = new ArrayList<>();
-
     public static List<Album> albums = new ArrayList<>();
-
     private final SongRepository songRepository;
     private final ArtistRepository artistRepository;
     private final AlbumRepository albumRepository;
@@ -47,11 +45,11 @@ public class DataHolder {
         albums = new ArrayList<>();
 
         if (albumRepository.count() == 0) {
-            albums.add(new Album("Starboy", "RNB", "2016"));
-            albums.add(new Album("TPAB", "RAP", "2015"));
-            albums.add(new Album("VLVODAHF", "IND", "2008"));
-            albums.add(new Album("Abbey Road", "ROCK", "1969"));
-            albums.add(new Album("Oracular Spectacular", "POP", "2007"));
+            albums.add(new Album("Starboy", "RNB", 2016));
+            albums.add(new Album("TPAB", "RAP", 2015));
+            albums.add(new Album("VLVODAHF", "IND", 2008));
+            albums.add(new Album("Abbey Road", "ROCK", 1969));
+            albums.add(new Album("Oracular Spectacular", "POP", 2007));
             albumRepository.saveAll(albums);
         }
 

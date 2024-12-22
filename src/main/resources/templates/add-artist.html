@@ -6,10 +6,50 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+
+<header xmlns:sec="http://www.w3.org/1999/xhtml">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/"> Songs </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+              aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
+        <ul class="navbar-nav m-auto">
+          <li class="nav-item m-auto">
+            <a class="nav-link active" href="/songs"> Songs </a>
+          </li>
+          <li class="nav-item m-auto">
+            <a class="nav-link active" href="/songs/add-form" sec:authorize="hasRole('ROLE_ADMIN')"> Add Song </a>
+          </li>
+          <li class="nav-item m-auto">
+            <a class="nav-link active" href="/add-artist/add-form" sec:authorize="hasRole('ROLE_ADMIN')"> Add Arist </a>
+          </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="btn btn-light btn-sm ml-3" href="/logout">
+              <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+          </li>
+
+          <li class="nav-item" sec:authorize="isAnonymous()">
+            <a class="btn btn-light btn-sm ml-3" href="/login">
+              <i class="fa-solid fa-right-to-bracket"></i> Login
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
 <div class="container mt-5">
   <h2>Add Artist to a Song</h2>
   <form th:action="@{/add-artist/add}" method="POST">
-    <!-- Song Selection Dropdown -->
     <div class="form-group">
       <label for="songId">Song</label>
       <select id="songId" name="songId" class="form-control" required>
@@ -18,33 +58,30 @@
       </select>
     </div>
 
-    <!-- Artist First Name -->
     <div class="form-group">
       <label for="firstName">First Name</label>
       <input type="text" id="firstName" name="firstName" class="form-control" required placeholder="Enter First Name">
     </div>
 
-    <!-- Artist Last Name -->
+
     <div class="form-group">
       <label for="lastName">Last Name</label>
       <input type="text" id="lastName" name="lastName" class="form-control" required placeholder="Enter Last Name">
     </div>
 
-    <!-- Artist Bio -->
     <div class="form-group">
       <label for="bio">Bio</label>
       <textarea id="bio" name="bio" class="form-control" required placeholder="Enter Artist Bio"></textarea>
     </div>
 
-    <!-- Submit Button -->
+
     <button type="submit" class="btn btn-primary">Add Artist to Song</button>
   </form>
 
-  <!-- Back Button -->
+
   <a href="/songs" class="btn btn-secondary mt-3">Back to Songs</a>
 </div>
 
-<!-- Optional: Add Bootstrap JS for better UI interactivity (e.g., tooltips, modals) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
